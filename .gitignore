@@ -16,3 +16,4 @@ target/
 bin/
 .settings/
 /nb-configuration.xml
+/nbactions.xml

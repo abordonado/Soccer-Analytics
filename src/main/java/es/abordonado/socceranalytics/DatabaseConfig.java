@@ -11,12 +11,12 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 
 
 @Configuration
-@MapperScan(basePackages="es.abordonado.socceranalytics.persistence")
+@MapperScan("es.abordonado.socceranalytics.persistence")
 public class DatabaseConfig {
     
     @Bean
     public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder().setType(H2).build();
+        return new EmbeddedDatabaseBuilder().setType(H2).addScript("schema.sql").build();
     }
     
     @Bean
