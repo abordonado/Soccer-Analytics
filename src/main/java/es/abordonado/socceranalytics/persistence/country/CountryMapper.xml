@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.abordonado.socceranalytics.persistence.country.CountryMapper">
+    
+    <resultMap id="countryResultMap" type="es.abordonado.socceranalytics.domain.Country">
+        <id property="id"               column="ID" />
+        <result property="code"         column="CODE" />
+        <result property="description"  column="DESCRIPTION" />
+    </resultMap>
+    
+    <sql id="fields">
+        c.ID, c.CODE, c.DESCRIPTION
+    </sql>
+    
+    <insert id="create" parameterType="es.abordonado.socceranalytics.domain.Country" keyProperty="id" flushCache="true">
+        INSERT INTO COUNTRY(ID, CODE, DESCRIPTION)
+        VALUES(#{id}, #{code}, #{description})
+    </insert>
+    
+    <select id="findById" parameterType="Integer" resultMap="countryResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM 
+        COUNTRY c
+        WHERE c.ID = #{id}
+    </select>
+    
+    <select id="findByCode" parameterType="String" resultMap="countryResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM 
+        COUNTRY c
+        WHERE c.CODE = #{code}
+    </select>
+    
+    <update id="update" parameterType="es.abordonado.socceranalytics.domain.Country" flushCache="true">
+        UPDATE COUNTRY SET
+        CODE = #{code},
+        DESCRIPTION = #{description}
+        WHERE ID = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="es.abordonado.socceranalytics.domain.Country" flushCache="true">
+        DELETE FROM COUNTRY
+        WHERE ID = #{id}
+    </delete>
+    
+    <select id="findAll" resultMap="countryResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM COUNTRY c
+        ORDER BY c.CODE
+    </select>
+                            
+</mapper>

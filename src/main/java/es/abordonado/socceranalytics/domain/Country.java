@@ -8,6 +8,8 @@ public class Country extends DomainClass {
     private String code;
     private String description;
     
+    public Country() {}
+    
     public Country(String code) {
         this.code = code;
     }

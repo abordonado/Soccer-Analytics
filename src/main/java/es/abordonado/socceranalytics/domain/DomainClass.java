@@ -9,6 +9,10 @@ public abstract class DomainClass {
         return this.Id; 
     }
     
+    private void setId(Integer id){
+        this.Id = id;
+    }
+    
     @Override
     public abstract boolean equals(Object object);
     
