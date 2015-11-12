@@ -15,9 +15,10 @@ public class TeamTest {
     
     @Test
     public void testEquals() {
-        Team t1 = new Team("ATM");
-        Team t2 = new Team("ATM");
-        Team t3 = new Team("CEL");
+        Country c = new Country("ESP");
+        Team t1 = new Team("ATM", c);
+        Team t2 = new Team("ATM", c);
+        Team t3 = new Team("CEL", c);
         assertTrue(t1.equals(t2));
         assertFalse(t1.equals(t3));
         assertFalse(t2.equals(t3));
@@ -31,15 +32,16 @@ public class TeamTest {
     
     @Test
     public void testContains(){
+        Country c = new Country("ESP");
         HashSet<Team> teams = new HashSet<Team>();
-        teams.add(new Team("ATM"));
-        teams.add(new Team("BAR"));
-        teams.add(new Team("CEL"));
+        teams.add(new Team("ATM", c));
+        teams.add(new Team("BAR", c));
+        teams.add(new Team("CEL", c));
         
-        assertTrue(teams.contains(new Team("ATM")));
-        assertTrue(teams.contains(new Team("BAR")));
-        assertTrue(teams.contains(new Team("CEL")));
-        assertFalse(teams.contains(new Team("ZAR")));        
+        assertTrue(teams.contains(new Team("ATM", c)));
+        assertTrue(teams.contains(new Team("BAR", c)));
+        assertTrue(teams.contains(new Team("CEL", c)));
+        assertFalse(teams.contains(new Team("ZAR", c)));        
     }
     
 }

@@ -20,9 +20,10 @@ public class FixtureTest {
     
     @Before
     public void beforeTest(){
-       t1 = new Team("ATM");
-       t2 = new Team("CEL");
-       t3 = new Team("ZAR");
+        Country c = new Country("ES");
+       t1 = new Team("ATM", c);
+       t2 = new Team("CEL", c);
+       t3 = new Team("ZAR", c);
        c1 = new Competition("CMP1");
     }
     
