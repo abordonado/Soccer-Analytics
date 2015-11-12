@@ -1,4 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <country id="1" code="ES" description="España" />
+
+    <country id="1" code="ESP" description="España" />
+    <country id="2" code="BRA" description="Brasil" />
+    <team id="1" code="ALB" name="Albacete" country="1" />
+    <team id="2" code="ZAR" name="Zaragoza" country="1" />
+
 </dataset>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.abordonado.socceranalytics.persistence.team.TeamMapper">
+    
+    <resultMap id="teamResultMap" type="es.abordonado.socceranalytics.domain.Team">
+        <id property="id"       column="TID" />
+        <result property="code" column="TCODE" />
+        <result property="name" column="NAME" />
+        <association property="country" column="country" resultMap="es.abordonado.socceranalytics.persistence.country.CountryMapper.countryResultMap" />
+    </resultMap>
+    
+    <sql id="fields">
+        t.ID as TID, t.CODE as TCODE, t.NAME, c.id, c.code, c.description, c.code
+    </sql>
+
+    <insert id="create" parameterType="es.abordonado.socceranalytics.domain.Team" keyProperty="id" flushCache="true">
+        INSERT INTO TEAM(ID, CODE, NAME, COUNTRY)
+        VALUES(#{id}, #{code}, #{name}, #{country.id})
+    </insert>
+    
+    <select id="findById" parameterType="Integer" resultMap="teamResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM TEAM t
+        INNER JOIN COUNTRY c ON t.country = c.id
+        WHERE t.ID = #{id}
+    </select>
+
+    <select id="findByCodeCountry" parameterType="map" resultMap="teamResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM TEAM t
+        INNER JOIN COUNTRY c ON t.country = c.id
+        WHERE t.CODE = #{code}
+        AND t.COUNTRY = #{country}
+    </select>
+    
+    <update id="update" parameterType="es.abordonado.socceranalytics.domain.Team" flushCache="true">
+        UPDATE TEAM SET
+        CODE = #{code},
+        NAME = #{name},
+        COUNTRY = #{country.id}
+        WHERE ID = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="es.abordonado.socceranalytics.domain.Team" flushCache="true">
+        DELETE FROM TEAM
+        WHERE ID = #{id}
+    </delete>
+    
+    <select id="findAll" resultMap="teamResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM TEAM t
+        INNER JOIN COUNTRY c ON t.country = c.id
+        ORDER BY t.CODE
+    </select>
+
+</mapper>

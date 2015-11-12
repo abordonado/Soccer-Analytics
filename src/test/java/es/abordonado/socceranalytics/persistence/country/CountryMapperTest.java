@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import static org.junit.Assert.*;
+import org.springframework.dao.DataIntegrityViolationException;
 
 
 public class CountryMapperTest extends AbstractDomainTest {
@@ -29,7 +30,7 @@ public class CountryMapperTest extends AbstractDomainTest {
     @Test(expected = DuplicateKeyException.class)
     public void testCreateDuplicate() {
         Country country = new Country();
-        country.setCode("ES");
+        country.setCode("ESP");
         country.setDescription("España");
         countryMapper.create(country);
         fail("Code duplicated!!!");
@@ -38,7 +39,7 @@ public class CountryMapperTest extends AbstractDomainTest {
     
     @Test
     public void testFindByIdIfExists() {
-        Country country = countryMapper.findByCode("ES");
+        Country country = countryMapper.findByCode("ESP");
         Country sameCountry = countryMapper.findById(country.getId());
         assertEquals(country, sameCountry);
     }
@@ -53,35 +54,44 @@ public class CountryMapperTest extends AbstractDomainTest {
     
     @Test
     public void testFindByCodeIfExists() {
-        Country country = countryMapper.findByCode("ES");
+        Country country = countryMapper.findByCode("ESP");
         assertNotNull(country);
     }
     
     
     @Test
     public void testFindByCodeIfNoExists() {
-        Country country = countryMapper.findByCode("PO");
+        Country country = countryMapper.findByCode("POR");
         assertNull(country);       
     }
     
     
     @Test
     public void testUpdate() {
-        Country country = countryMapper.findByCode("ES");
+        Country country = countryMapper.findByCode("ESP");
         country.setDescription("update");
         countryMapper.update(country);
-        Country otherCountry = countryMapper.findByCode("ES");
+        Country otherCountry = countryMapper.findByCode("ESP");
         assertEquals(country, otherCountry);
     }
     
 
     @Test
     public void testDelete() {
-        Country country = countryMapper.findByCode("ES");
+        Country country = countryMapper.findByCode("POR");
         countryMapper.delete(country);
-        assertEquals(0, countryMapper.findAll().size());
+        country = countryMapper.findByCode("POR");
+        assertNull(country);        
     }
-
+    
+    
+    @Test(expected = DataIntegrityViolationException.class)
+    public void testDeleteDataIntegrity() {
+        Country country = countryMapper.findByCode("ESP");
+        countryMapper.delete(country);
+        fail("Data Integrity violantion");
+    }
+    
     
     @Test
     public void testFindAll() {

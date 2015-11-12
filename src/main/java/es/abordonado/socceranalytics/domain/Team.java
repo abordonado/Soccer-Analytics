@@ -8,11 +8,14 @@ public class Team extends DomainClass {
     private String code;
     private String name;
     private Country country;
-
-    public Team(String code) {
-        this.code = code;
-    }
     
+    public Team() {}
+
+    public Team(String code, Country country) {
+        this.code = code;
+        this.country = country;
+    }
+
     public String getCode() {
         return code;
     }
@@ -39,8 +42,9 @@ public class Team extends DomainClass {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 83 * hash + Objects.hashCode(this.code);
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.code);
+        hash = 79 * hash + Objects.hashCode(this.country);
         return hash;
     }
 
@@ -56,7 +60,10 @@ public class Team extends DomainClass {
         if (!Objects.equals(this.code, other.code)) {
             return false;
         }
+        if (!Objects.equals(this.country, other.country)) {
+            return false;
+        }
         return true;
-    }
+    }   
     
 }
