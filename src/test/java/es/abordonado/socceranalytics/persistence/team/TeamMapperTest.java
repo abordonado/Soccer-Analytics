@@ -1,10 +1,9 @@
-package es.abordonado.socceranalytics.persistence.Team;
+package es.abordonado.socceranalytics.persistence.team;
 
 import es.abordonado.socceranalytics.AbstractDomainTest;
 import es.abordonado.socceranalytics.domain.Country;
 import es.abordonado.socceranalytics.domain.Team;
 import es.abordonado.socceranalytics.persistence.country.CountryMapper;
-import es.abordonado.socceranalytics.persistence.team.TeamMapper;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
