@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.abordonado.socceranalytics.persistence.competition.CompetitionMapper">
+    
+    <resultMap id="competitionResultMap" type="es.abordonado.socceranalytics.domain.Competition">
+        <id property="id"               column="CMP_ID" />
+        <result property="code"         column="CMP_CODE"/>
+        <result property="description"  column="CMP_DESCRIPTION" />
+        <result property="season"       column="CMP_SEASON" />
+        <result property="startAt"      column="CMP_START_AT" />
+        <result property="endAt"        column="CMP_END_AT" />
+        <association property="country" column="country" resultMap="es.abordonado.socceranalytics.persistence.country.CountryMapper.countryResultMap" />
+    </resultMap>
+    
+    <sql id="fields">
+        cmp.ID as CMP_ID, cmp.CODE as CMP_CODE, cmp.description as CMP_DESCRIPTION,
+        cmp.season as CMP_SEASON, cmp.start_at as CMP_START_AT, cmp.end_at as CMP_END_AT,
+        c.id, c.code, c.description, c.code
+    </sql>
+
+    <insert id="create" parameterType="es.abordonado.socceranalytics.domain.Competition" keyProperty="id" flushCache="true">
+        INSERT INTO COMPETITION(ID, CODE, DESCRIPTION, SEASON, START_AT, END_AT, COUNTRY)
+        VALUES(#{id}, #{code}, #{description}, #{season}, #{startAt}, #{endAt}, #{country.id})
+    </insert>
+    
+    <select id="findById" parameterType="Integer" resultMap="competitionResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM COMPETITION cmp
+        INNER JOIN COUNTRY c ON cmp.country = c.id
+        WHERE cmp.ID = #{id}
+    </select>
+
+    <select id="findByCodeSeason" parameterType="map" resultMap="competitionResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM COMPETITION cmp
+        INNER JOIN COUNTRY c ON cmp.country = c.id
+        WHERE cmp.CODE = #{code}
+        AND cmp.SEASON = #{season}
+    </select>
+    
+    <update id="update" parameterType="es.abordonado.socceranalytics.domain.Competition" flushCache="true">
+        UPDATE COMPETITION SET
+        CODE = #{code},
+        DESCRIPTION = #{description},
+        COUNTRY = #{country.id}
+        WHERE ID = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="es.abordonado.socceranalytics.domain.Competition" flushCache="true">
+        DELETE FROM COMPETITION
+        WHERE ID = #{id}
+    </delete>
+    
+    <select id="findAll" resultMap="competitionResultMap">
+        SELECT 
+        <include refid="fields"/>
+        FROM COMPETITION cmp
+        INNER JOIN COUNTRY c ON cmp.country = c.id
+        ORDER BY cmp.CODE
+    </select>
+
+</mapper>

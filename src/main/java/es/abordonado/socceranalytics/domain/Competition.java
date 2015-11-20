@@ -8,10 +8,12 @@ public class Competition extends DomainClass {
     
     private String code;
     private String description;
-    private Integer seasson;
+    private Integer season;
     private Date startAt;
     private Date endAt;
     private Country country;
+    
+    public Competition() {}
 
     public Competition(String code) {
         this.code = code;
@@ -33,12 +35,12 @@ public class Competition extends DomainClass {
         this.description = description;
     }
 
-    public Integer getSeasson() {
-        return seasson;
+    public Integer getSeason() {
+        return season;
     }
 
-    public void setSeasson(Integer seasson) {
-        this.seasson = seasson;
+    public void setSeason(Integer season) {
+        this.season = season;
     }
 
     public Date getStartAt() {
