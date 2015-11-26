@@ -6,13 +6,19 @@ import java.util.Objects;
 
 public class Fixture extends DomainClass {
     
-    private byte dateSeason;
+    private Byte dateSeason;
     private Date dateFixture;
     private Team homeTeam;
     private Team awayTeam;
     private Competition competition;
+    private Byte homeGoalsHT;
+    private Byte awayGoalsHT;
+    private Byte homeGoalsFT;
+    private Byte awayGoalsFT;
+    
+    public Fixture(){}
 
-    public Fixture(byte dateSeason, Team homeTeam, Team awayTeam, Competition competition) {
+    public Fixture(Byte dateSeason, Team homeTeam, Team awayTeam, Competition competition) {
         this.dateSeason = dateSeason;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
@@ -23,7 +29,7 @@ public class Fixture extends DomainClass {
         return dateSeason;
     }
 
-    public void setDateSeason(byte dateSeason) {
+    public void setDateSeason(Byte dateSeason) {
         this.dateSeason = dateSeason;
     }
 
@@ -59,6 +65,39 @@ public class Fixture extends DomainClass {
         this.competition = competition;
     }
 
+    public Byte getHomeGoalsHT() {
+        return homeGoalsHT;
+    }
+
+    public void setHomeGoalsHT(Byte homeGoalsHT) {
+        this.homeGoalsHT = homeGoalsHT;
+    }
+
+    public Byte getAwayGoalsHT() {
+        return awayGoalsHT;
+    }
+
+    public void setAwayGoalsHT(Byte awayGoalsHT) {
+        this.awayGoalsHT = awayGoalsHT;
+    }
+
+    public Byte getHomeGoalsFT() {
+        return homeGoalsFT;
+    }
+
+    public void setHomeGoalsFT(Byte homeGoalsFT) {
+        this.homeGoalsFT = homeGoalsFT;
+    }
+
+    public Byte getAwayGoalsFT() {
+        return awayGoalsFT;
+    }
+
+    public void setAwayGoalsFT(Byte awayGoalsFT) {
+        this.awayGoalsFT = awayGoalsFT;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -78,7 +117,7 @@ public class Fixture extends DomainClass {
             return false;
         }
         final Fixture other = (Fixture) obj;
-        if (this.dateSeason != other.dateSeason) {
+        if (!Objects.equals(this.dateSeason, other.dateSeason)) {
             return false;
         }
         if (!Objects.equals(this.homeTeam, other.homeTeam)) {
@@ -91,6 +130,6 @@ public class Fixture extends DomainClass {
             return false;
         }
         return true;
-    }
+    }   
     
 }

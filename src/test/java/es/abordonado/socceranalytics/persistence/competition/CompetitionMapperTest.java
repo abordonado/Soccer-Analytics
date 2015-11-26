@@ -7,6 +7,7 @@ import es.abordonado.socceranalytics.persistence.country.CountryMapper;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 
 
@@ -91,12 +92,21 @@ public class CompetitionMapperTest extends AbstractDomainTest {
 
     @Test
     public void testDelete() {
-        Competition c1 = competitionMapper.findByCodeSeason("ESP1", 2015);
+        Competition c1 = competitionMapper.findByCodeSeason("BRA1", 2015);
         assertNotNull(c1);
         competitionMapper.delete(c1);
         
-        Competition c2 = competitionMapper.findByCodeSeason("ESP1", 2015);
+        Competition c2 = competitionMapper.findByCodeSeason("BRA1", 2015);
         assertNull(c2);
+    }
+    
+    
+    @Test(expected = DataIntegrityViolationException.class)
+    public void testDeleteDataIntegrity() {
+        Competition c1 = competitionMapper.findByCodeSeason("ESP1", 2015);
+        assertNotNull(c1);
+        competitionMapper.delete(c1);
+        fail("Data Integrity violantion");
     }
     
     

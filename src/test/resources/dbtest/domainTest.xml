@@ -6,7 +6,12 @@
     
     <team id="1" code="ALB" name="Albacete" country="1" />
     <team id="2" code="ZAR" name="Zaragoza" country="1" />
+    <team id="3" code="ATM" name="Atletico" country="1" />
     
     <competition id="1" code="ESP1" description="Liga" season="2015" country="1" />
-
+    <competition id="5" code="BRA1" description="Brasil" season="2015" country="2" />
+    
+    <fixture id="1" competition="1" date_season="1" date_fixture="2015-05-30" home_team="1" away_team="2" />
+    <fixture id="20" competition="1" date_season="20" date_fixture="2016-02-01" home_team="2" away_team="1" />
+    
 </dataset>

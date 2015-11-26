@@ -4,14 +4,24 @@
 <mapper namespace="es.abordonado.socceranalytics.persistence.team.TeamMapper">
     
     <resultMap id="teamResultMap" type="es.abordonado.socceranalytics.domain.Team">
-        <id property="id"       column="TID" />
-        <result property="code" column="TCODE" />
+        <id property="id"       column="ID" />
+        <result property="code" column="CODE" />
         <result property="name" column="NAME" />
-        <association property="country" column="country" resultMap="es.abordonado.socceranalytics.persistence.country.CountryMapper.countryResultMap" />
+        <association property="country" column="country" resultMap="es.abordonado.socceranalytics.persistence.country.CountryMapper.countryResultMap" columnPrefix="C_" />
     </resultMap>
     
     <sql id="fields">
-        t.ID as TID, t.CODE as TCODE, t.NAME, c.id, c.code, c.description, c.code
+        t.ID, 
+        t.CODE, 
+        t.NAME, 
+        c.id as C_ID, 
+        c.code as C_CODE, 
+        c.description as C_DESCRIPTION
+    </sql>
+    
+    <sql id="fromWithJoin">
+        FROM TEAM t
+        INNER JOIN COUNTRY c ON t.country = c.id
     </sql>
 
     <insert id="create" parameterType="es.abordonado.socceranalytics.domain.Team" keyProperty="id" flushCache="true">
@@ -22,16 +32,14 @@
     <select id="findById" parameterType="Integer" resultMap="teamResultMap">
         SELECT 
         <include refid="fields"/>
-        FROM TEAM t
-        INNER JOIN COUNTRY c ON t.country = c.id
+        <include refid="fromWithJoin"/>
         WHERE t.ID = #{id}
     </select>
 
     <select id="findByCodeCountry" parameterType="map" resultMap="teamResultMap">
         SELECT 
         <include refid="fields"/>
-        FROM TEAM t
-        INNER JOIN COUNTRY c ON t.country = c.id
+        <include refid="fromWithJoin"/>
         WHERE t.CODE = #{code}
         AND t.COUNTRY = #{country}
     </select>
@@ -52,8 +60,7 @@
     <select id="findAll" resultMap="teamResultMap">
         SELECT 
         <include refid="fields"/>
-        FROM TEAM t
-        INNER JOIN COUNTRY c ON t.country = c.id
+        <include refid="fromWithJoin"/>
         ORDER BY t.CODE
     </select>
 

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="es.abordonado.socceranalytics.persistence.fixture.FixtureMapper">
+    
+    <resultMap id="fixtureResultMap" type="es.abordonado.socceranalytics.domain.Fixture">
+        <id property="id"              column="ID" />
+        <result property="dateSeason"  column="DATE_SEASON" />
+        <result property="dateFixture" column="DATE_FIXTURE" />
+        <result property="homeGoalsHT" column="HOME_GOALS_HT" />
+        <result property="awayGoalsHT" column="AWAY_GOALS_HT" />
+        <result property="homeGoalsFT" column="HOME_GOALS_HT" />
+        <result property="awayGoalsFT" column="AWAY_GOALS_HT" />
+        <association property="competition" column="COMPETITION" resultMap="es.abordonado.socceranalytics.persistence.competition.CompetitionMapper.competitionResultMap" columnPrefix="CMP_"/>
+        <association property="homeTeam"    column="HOME_TEAM"   resultMap="es.abordonado.socceranalytics.persistence.team.TeamMapper.teamResultMap" columnPrefix="T_HOME_"/>
+        <association property="awayTeam"    column="AWAY_TEAM"   resultMap="es.abordonado.socceranalytics.persistence.team.TeamMapper.teamResultMap" columnPrefix="T_AWAY_"/>        
+    </resultMap>
+    
+    
+    <sql id="fields">
+        f.id, 
+        cmp.id as COMPETITION,
+        f.date_season, 
+        f.date_fixture,
+        ht.id as HOME_TEAM,
+        at.id as AWAY_TEAM,
+        f.home_goals_ht,
+        f.away_goals_ht,
+        f.home_goals_ft,
+        f.away_goals_ft,
+        cmp.id as CMP_ID,
+        cmp.CODE as CMP_CODE, 
+        cmp.description as CMP_DESCRIPTION,
+        cmp.season as CMP_SEASON, 
+        cmp.start_at as CMP_START_AT, 
+        cmp.end_at as CMP_END_AT,
+        ht.ID as T_HOME_ID, 
+        ht.CODE as T_HOME_CODE, 
+        ht.NAME as T_HOME_NAME,
+        at.ID as T_AWAY_ID, 
+        at.CODE as T_AWAY_CODE, 
+        at.NAME as T_AWAY_NAME
+    </sql>
+    
+    <sql id="fromWithJoins">
+        FROM FIXTURE f 
+        INNER JOIN COMPETITION cmp ON (f.competition = cmp.id)
+        INNER JOIN TEAM ht ON (f.home_team = ht.id)
+        INNER JOIN TEAM at ON (f.away_team = at.id)
+    </sql>
+    
+    
+    <insert id="create" parameterType="es.abordonado.socceranalytics.domain.Fixture" keyProperty="id" flushCache="true">
+        INSERT INTO FIXTURE(ID, COMPETITION, DATE_SEASON, DATE_FIXTURE, HOME_TEAM, AWAY_TEAM, HOME_GOALS_HT, AWAY_GOALS_HT, HOME_GOALS_FT, AWAY_GOALS_FT)
+        VALUES(#{id}, #{competition.id}, #{dateSeason}, #{dateFixture}, #{homeTeam.id}, #{awayTeam.id}, #{homeGoalsHT}, #{awayGoalsHT}, #{homeGoalsFT}, #{awayGoalsFT})
+    </insert>
+    
+    
+    <select id="findById" parameterType="Integer" resultMap="fixtureResultMap">
+        SELECT
+        <include refid="fields" />
+        <include refid="fromWithJoins" />
+        WHERE f.id = #{id}
+    </select>
+    
+    
+    <select id="findByCompetitionDateHomeAway" parameterType="map" resultMap="fixtureResultMap">
+        SELECT
+        <include refid="fields" />
+        <include refid="fromWithJoins" />
+        WHERE cmp.id = #{competition}
+        AND f.date_season = #{dateSeason}
+        AND ht.id = #{homeTeam}
+        AND at.id = #{awayTeam}
+    </select>
+    
+    
+    <update id="update" parameterType="es.abordonado.socceranalytics.domain.Fixture" flushCache="true">
+        UPDATE FIXTURE SET
+        COMPETITION   = #{competition.id},
+        DATE_SEASON   = #{dateSeason},
+        DATE_FIXTURE  = #{dateFixture},
+        HOME_TEAM     = #{homeTeam.id},
+        AWAY_TEAM     = #{awayTeam.id},
+        HOME_GOALS_HT = #{homeGoalsHT},
+        AWAY_GOALS_HT = #{awayGoalsHT},
+        HOME_GOALS_FT = #{homeGoalsFT},
+        AWAY_GOALS_FT = #{awayGoalsFT}
+        WHERE ID = #{id}
+    </update>
+    
+
+    <delete id="delete" parameterType="es.abordonado.socceranalytics.domain.Fixture" flushCache="true">
+        DELETE FROM FIXTURE
+        WHERE ID = #{id}
+    </delete>
+
+
+    <select id="findAll" resultMap="fixtureResultMap">
+        SELECT 
+        <include refid="fields"/>
+        <include refid="fromWithJoins"/>
+    </select>
+
+</mapper>

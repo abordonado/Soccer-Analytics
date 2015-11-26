@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 
 
@@ -93,12 +94,21 @@ public class TeamMapperTest extends AbstractDomainTest {
 
     @Test
     public void testDelete() {
-        Team t = teamMapper.findById(new Integer(1));
+        Team t = teamMapper.findById(new Integer(3));
         assertNotNull(t);
         
         teamMapper.delete(t);
-        t = teamMapper.findById(new Integer(1));
-        assertNull(t);
+        t = teamMapper.findById(new Integer(3));
+        assertNull(t);        
+    }
+    
+    
+    @Test(expected = DataIntegrityViolationException.class)
+    public void testDeleteDataIntegrity() {
+        Team t = teamMapper.findById(new Integer(1));
+        assertNotNull(t);
+        teamMapper.delete(t);
+        fail("Data Integrity violantion");
     }
 
     
